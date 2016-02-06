@@ -38,6 +38,27 @@ def castle():
     print ("           +     ||: . ||: ,   +++++++ .  .  ||:   |             +")
     print ("                 ||: . ||: ,   +++++++ .  .  ||:   |        *")
     print ("                 ||: . ||: ,   +++++++ .  .  ||:   |")
+def end():
+    print "This is where this template ends, this is now YOUR world, build your adventure and share it with the world"
+          
+    print ("   _       _                 _")
+    print ("  /_\   __| |_   _____ _ __ | |_ _   _ _ __ ___")
+    print (" //_\\ / _` \ \ / / _ \ '_ \| __| | | | '__/ _ \ ")
+    print( "/  _  \ (_| |\ V /  __/ | | | |_| |_| | | |  __/")
+    print ("\_/ \_/\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___|")
+          
+    print ("                     _ _")
+    print ("  __ ___      ____ _(_) |_ ___")
+    print (" / _` \ \ /\ / / _` | | __/ __|")
+    print ("| (_| |\ V  V / (_| | | |_\__ \ ")
+    print (" \__,_| \_/\_/ \__,_|_|\__|___/")
+          
+    print (" _   _  ___  _   _")
+    print ("| | | |/ _ \| | | |")
+    print ("| |_| | (_) | |_| |")
+    print (" \__, |\___/ \__,_|")
+    print ( " |___/")
+
 
 def north():
     print "To go north press n then enter"
@@ -56,8 +77,11 @@ def setup():
     #Our variable "name" is used to store our name, captured by keyboard input.
     name = raw_input("What is your name warrior? ")
     #randint is a great way of adding some variety to your players statistics.
-    HP = randint(5,20)
-    MP = randint(5,20)
+    if raw_input("Do you want to start with a saved game? (y|n)") == "y":
+        load()
+    else:    
+        HP = randint(5,20)
+        MP = randint(5,20)
 
 def villager():
     #This will create a randomly named Villager to interact with
@@ -128,7 +152,31 @@ def ranger():
           shuffle(response)
           message = response[0]
           print message
-
+def save():
+	global HP	
+	global MP
+	global name
+	ts=strftime("%Y%b%d-%H%M%S")
+	fname="adventure-" +name
+	fobj=open(fname, "w")
+	if (fobj):
+		fobj.write(str(HP)+";"+str(MP))
+		fobj.close()
+		print "Spielstand gespeichert\n"
+	else:
+		 print "konnte Datei nicht anlegen\n"
+def load():
+	global HP
+	global MP
+	global name
+	fname = "adventure-" + name
+	fobj = open(fname, "r")
+	HP = int(fobj.read(2))
+	fobj.seek(3)
+	MP = int(fobj.read(2))
+	print ("\nDaten gelesen")
+	fobj.close()
+		
 #We now use our functions in the game code, we call the title, the castle picture and then ask the game to run the setup for our character.
 clear_screen()
 title()
@@ -222,7 +270,19 @@ elif move == 's':
                         heal()
       else:
           print "\nYou run away from the " + enemyname + "."
-          sys.exit(0)
+	  print"\nDo you want to save your progress?"
+	  if raw_input()=="yes":
+	     save()
+             end()
+             sys.exit(0)
+          else:
+              save()        
+              end()
+    	      sys.exit(0)
+    if raw_input("\nDo you want to save the game") == "yes":
+       save()
+       end()
+	
 if move != 's':        
  fight = raw_input("\nDo you wish to fight?" )
 
@@ -239,6 +299,14 @@ if move != 's':
 	     print "Gratulation! You won and got" +" "+ str(mp)+" "+"Magic Points. Your Helthpoints: " + str(HP)
 	     MP = MP +mp 
 	     print "\nyour Magicpoints: " + str(MP) +"\n"
+             print "\nDo you want to save the progress?"
+	     if raw_input=="yes":
+                 save()
+             else:
+		sys.exit(0)
+                       
+
+
 	else:	
         	enemyhit = randint(0,5)
         	print "The ogre swings a club at you and causes " + str(enemyhit) + " of damage"
@@ -249,24 +317,16 @@ if move != 's':
 
  else:
     print "You turn and run away from the ogre"
+    print "/nDo you want to save your progress?"
+    if raw_input() == "yes":
+          save()
+          end()
+          sys.exit(0)
+    else:
+         print "Do you want to save the game?" 
+         if raw_input() == "yes":
 
-
-print "This is where this template ends, this is now YOUR world, build your adventure and share it with the world"
-
-print "   _       _                 _"
-print "  /_\   __| |_   _____ _ __ | |_ _   _ _ __ ___"
-print " //_\\ / _` \ \ / / _ \ '_ \| __| | | | '__/ _ \ "
-print "/  _  \ (_| |\ V /  __/ | | | |_| |_| | | |  __/"
-print "\_/ \_/\__,_| \_/ \___|_| |_|\__|\__,_|_|  \___|"
-
-print "                     _ _"
-print "  __ ___      ____ _(_) |_ ___"
-print " / _` \ \ /\ / / _` | | __/ __|"
-print "| (_| |\ V  V / (_| | | |_\__ \ "
-print " \__,_| \_/\_/ \__,_|_|\__|___/"
-
-print " _   _  ___  _   _"
-print "| | | |/ _ \| | | |"
-print "| |_| | (_) | |_| |"
-print " \__, |\___/ \__,_|"
-print " |___/"
+          save()          
+          end()
+         else:
+          end()
