@@ -176,6 +176,8 @@ def load():
 	MP = int(fobj.read(2))
 	print ("\nDaten gelesen")
 	fobj.close()
+
+	
 		
 #We now use our functions in the game code, we call the title, the castle picture and then ask the game to run the setup for our character.
 clear_screen()
