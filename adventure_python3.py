@@ -321,7 +321,7 @@ if move != 's':
         save()
         end()
     else:
-        save()
+        print("ok, you didn't want to save your progress!!")
         end()
         
     
